@@ -22,6 +22,14 @@
         });
     </script>
 
+<%--    <script>--%>
+<%--        $(document).click(function (){--%>
+<%--            $('#btn-comment').on('click', function () {--%>
+
+<%--            });--%>
+<%--        });--%>
+<%--    </script>--%>
+
 </head>
 <body>
 <%@include file="header.jsp"%>
@@ -100,7 +108,7 @@
             <div class="col-sm">
                 <label for="contents" class="form-label">내용</label>
                 <input type="text" class="form-control" id="contents" name="contents" value="<%=contents%>"
-                style="height: 500px" rows="10" cols="50">
+                       style="height: 500px" rows="10" cols="50">
             </div>
             <div class="row my-3">
                 <div class="col-sm">
@@ -114,15 +122,12 @@
         </div>
         <div class="container">
             <div class="form-group">
-                <form method="post" encType = "multipart/form-data" action="">
+                <form method="post" encType = "multipart/form-data" action="boardComment.jsp">
                     <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                         <tr>
                             <td style="border-bottom:none;" valign="middle"><br><br></td>
                             <td><input type="text" style="height:100px;" class="form-control" placeholder="상대방을 존중하는 댓글을 남깁시다." name = "commentText"></td>
-                            <td><br><br><input type="submit" class="btn-primary pull" value="댓글 작성"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><input type="file" name="fileName"></td>
+                            <td><br><br><td><br><br><input type="submit" class="btn-primary pull" value="댓글 작성"></td>
                         </tr>
                     </table>
                 </form>

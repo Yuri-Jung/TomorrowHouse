@@ -1,4 +1,5 @@
-<%--
+<%@ page import="dto.CommentDto" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: admin
   Date: 2022-11-28
@@ -21,19 +22,37 @@
             });
         });
     </script>
+<style>
+    #tblAddCommnet, #tblListComment { width: 700px; margin: 15px auto; }
 
-<%--    <script>--%>
-<%--        $(document).click(function (){--%>
-<%--            $('#btn-comment').on('click', function () {--%>
+    #tblAddComment { margin-top: 30px; }
+    #tblAddComment td:nth-child(1) { width: 600px; }
+    #tblAddComment td:nth-child(2) { width: 100px; }
 
-<%--            });--%>
-<%--        });--%>
-<%--    </script>--%>
+    #tblListComment td:nth-child(1) { width: 600px; }
+    #tblListComment td:nth-child(2) { width: 100px; }
 
+    #tblListComment td {
+        position: relative;
+        left: 0;
+        top: 0;
+    }
+
+    #tblListComment td span {
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+        color: #AAA;
+        font-size: 11px;
+    }
+
+</style>
 </head>
 <body>
 <%@include file="header.jsp"%>
+<%--    메인 데이터 가져오기--%>
 <%
+
     request.setCharacterEncoding("UTF-8");
     int idx = Integer.parseInt(request.getParameter("idx"));
     PreparedStatement pstmt = null;
@@ -62,7 +81,37 @@
             updateDt = rs.getString("update_dt");
             hitCnt = rs.getInt("hit_cnt");
             likeCnt = rs.getInt("like_cnt");
+        }
+    }
+    catch (SQLException e){
+        out.println(e.getMessage());
+    }
+    finally {
 
+    }
+%>
+<%--    리뷰데이터 가져오기--%>
+<%
+    request.setCharacterEncoding("UTF-8");
+    int boardIdx = Integer.parseInt(request.getParameter("idx"));
+    PreparedStatement pstmt2 = null;
+    int idx2 = 0;
+    ResultSet rs2 = null;
+    String commentDate = "";
+    String commentContents = "";
+    String userId2 = "";
+
+    try {
+        String sql2 = "SELECT idx, userId, boardIdx, commentContents, commentDate, deleted_yn from comment ";
+        sql2 += " where deleted_yn='N' and boardIdx= ? ";
+        pstmt2 = conn.prepareStatement(sql2);
+        pstmt2.setInt(1, boardIdx);
+        rs2 = pstmt2.executeQuery();
+        if(rs2.next()) {
+            idx2=(rs2.getInt("idx"));
+            userId2=(rs2.getString("userId"));
+            commentContents=(rs2.getString("commentContents"));
+            commentDate=(rs2.getString("commentDate"));
         }
     }
     catch (SQLException e){
@@ -72,8 +121,15 @@
         if (rs != null) {rs.close();}
         if (conn != null) {conn.close();}
         if (pstmt != null) {pstmt.close();}
+        if (rs2 != null) {rs2.close();}
+        if (conn != null) {conn.close();}
+        if (pstmt2 != null) {pstmt2.close();}
     }
 %>
+
+
+
+
 <main class="container mt-5">
     <div class="row">
         <div class="col-sm">
@@ -108,7 +164,7 @@
             <div class="col-sm">
                 <label for="contents" class="form-label">내용</label>
                 <input type="text" class="form-control" id="contents" name="contents" value="<%=contents%>"
-                       style="height: 500px" rows="10" cols="50">
+                        style="height: 500px" rows="10" cols="50">
             </div>
             <div class="row my-3">
                 <div class="col-sm">
@@ -120,22 +176,46 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="form-group">
-                <form method="post" encType = "multipart/form-data" action="boardComment.jsp">
-                    <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
-                        <tr>
-                            <td style="border-bottom:none;" valign="middle"><br><br></td>
-                            <td><input type="text" style="height:100px;" class="form-control" placeholder="상대방을 존중하는 댓글을 남깁시다." name = "commentText"></td>
-                            <td><br><br><td><br><br><input type="submit" class="btn-primary pull" value="댓글 작성"></td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+        <div>
+            <form method="post" enctype="multipart/form-data" action="commentWrite.jsp?boardIdx=<%=idx%>&commentContents=<%=commentContents%>" >
+            <table id="commentList" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>글번호</td>
+                        <td>작성자</td>
+                        <td>내용</td>
+                        <td>날짜</td>
+                    </tr>
+                </thead>
+<%--                <c:if test="${ clist.size() == 0 }">--%>
+<%--                    <tr>--%>
+<%--                        <td colspan="2">댓글이 없습니다.</td>--%>
+<%--                    </tr>--%>
+<%--                </c:if>--%>
+
+                <tbody>
+                    <tr>
+                        <td width="10%"><%=idx2%></td>
+                        <td width="15%"><%=userId2%></td>
+                        <td width="60%"> <%=commentContents%></td>
+                        <td width="30%"><%=commentDate%></td>
+                        <td width="30%"><a href="commentDelete.jsp?boardIdx=<%=idx2%>" class="btn btn-primary">삭제</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+                <table id="tblAddComment" class="table table-bordered">
+                    <tr>
+                        <td><input type="text" name="commentContents" id="commentContents" class="form-control" required placeholder="댓글을 작성하세요. "/></td>
+<%--                        <td ><input type="submit" class="btn btn-primary"> <a href="commentWrite.jsp?boardIdx=<%=idx%>" >등록하기/></a></td>--%>
+                        <td><input type="submit" class="btn-primary pull" value="댓글 작성"></td>
+                    </tr>
+                </table>
+<%--                <input type="hidden" name="pseq" value="<%=idx2%>"/>--%>
+            </form>
         </div>
     </div>
 </main>
 <%@include file="footer.jsp"%>
 </body>
-
 </html>

@@ -20,6 +20,12 @@
     //파일 기본경로, 상세경로
     String filePath = defaultPath + "ckEimg" + File.separator;
 %>
+
+
+
+<%--<a href="login.jsp" class="btn btn-primary">글쓰기</a>--%>
+<%--out.println("<script>alert('로그인 후 이용해주세요'); location.href='login.jsp';</script>");--%>
+
 <html>
 <head>
     <title>test</title>
@@ -113,6 +119,8 @@
 
 <body>
 <%@include file="header.jsp"%>
+
+
 <header class="container mt-3">
     <div class="p-5 mb-4 bg-white rounded-3">
         <div class="container-fluid py-4">

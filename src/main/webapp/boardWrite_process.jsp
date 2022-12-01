@@ -23,7 +23,9 @@
 <%
   request.setCharacterEncoding("utf-8");
   String sel = request.getParameter("sel");
-  String userId = request.getParameter("id");
+//  String userId = request.getParameter("id");
+//  session값 받아와서 아이디저장
+  String userId = (String)session.getAttribute("userId");
   String title = request.getParameter("title");
   String contents = request.getParameter("contents");
 out.print(sel);

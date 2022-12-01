@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=utf-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
 <%@include file="dbconn.jsp"%>
+
 <%
   request.setCharacterEncoding("utf-8");
   String id = request.getParameter("id");
@@ -25,7 +26,7 @@
 
     if (rs.next()) {
       if(pw.equals(rs.getString("userPw"))){
-        session.setAttribute("name", rs.getString("userName"));
+        session.setAttribute("userId", rs.getString("userId"));
         out.println("<script>alert('환영합니다'); location.href='boardMain.jsp';</script>");
       }
     }

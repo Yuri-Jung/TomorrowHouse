@@ -8,6 +8,64 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="dbconn.jsp"%>
+<script type="text/javascript">
+
+    $(function(){
+
+        var able = $('#userId').val();		//	로그인된 유저의 'id'값
+
+        var id = $('#id').val();			//	게시글의 'id'값
+
+        if(able==id){
+
+            $("#submit").removeAttr("disabled");		//	버튼을 활성화 시킨다.
+
+            $('#delBtn').click(function(){
+
+                var pw = $('#password').val();		//	게시글의 'passwowrd'값
+
+                var idx = $('#idx').val();			//	게시글의 'idx'값
+
+                alert(pw);
+
+                var ck = prompt("본인 비밀번호를 입력해 주세요");		// prompt를 여러번 이용하기 위해 변수에 넣어준다
+
+                if(ck == null){
+
+                    alert('취소되었습니다.');
+
+                }else if(ck == ""){
+
+                    alert('아무것도 입력되지 않았습니다.');
+
+                }else {
+
+                    if(ck == pw){
+
+                        alert("삭제되었습니다.")
+
+                        viewForm.action="delete";		//	조건을 만족하면 폼안의 값들을 컨트롤러의 '/delete'로 넘겨줄 경로
+
+                        viewForm.submit();				//	넘겨주는 명령
+
+                    }else{
+
+                        alert("비밀번호가 틀립니다.")
+
+                    }
+
+                }
+
+            });
+
+        }else{
+
+            $("#delBtn").attr("disabled", "disabled");	//	버튼 비활성화
+
+        }
+
+    });
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +107,21 @@
 </style>
 </head>
 <body>
+<c:if test="${sessionScope.loginId == null || sessionScope.loginId eq 'guest'}">
+<%--    <img src="/resources/img/좋아요전.png" id="likeimg" width="60px" height="60px"--%>
+<%--         class="rounded-circle mt-2">--%>
+    ${b.like_count} <br><br>
+    추천 기능은 <a href="/member/login" type="button" id="newLogin"
+              class="btn btn-outline-success">로그인</a> 후 사용 가능합니다.
+</c:if>
+<c:if test="${sessionScope.loginId != null}">
+    <div>
+        <input type="hidden" id="like_check" value="${like.like_check}">
+        <img class="rounded-circle likeimg" id="likeimg" src="/resources/img/좋아요전.png"
+             width="60px" height="60px"> ${b.like_count}
+    </div>
+</c:if>
+</body>
 <%@include file="header.jsp"%>
 <%--    메인 데이터 가져오기--%>
 <%
@@ -65,14 +138,26 @@
     String createDt = "";
     String updateDt = "";
 
-    String sql = "SELECT idx, title, contents, userId, create_dt, hit_cnt,update_dt, like_cnt from board where deleted_yn='N' and idx=? " ;
-    try{
-//        stmt = conn.createStatement();
+
+
+//    String query = "UPDATE "
+
+try {
+//    조회수 올리기
+    String query = "UPDATE board SET hit_cnt = hit_cnt+1 where idx = ? ";
+    pstmt = conn.prepareStatement(query);
+    pstmt.setInt(1, idx);
+    pstmt.executeUpdate();
+
+
+    try {
+//        상세정보 가져오기
+        String sql = "SELECT idx, title, contents, userId, create_dt, hit_cnt,update_dt, like_cnt from board where deleted_yn='N' and idx=? ";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, idx);
         rs = pstmt.executeQuery();
 
-        if(rs.next()){
+        if (rs.next()) {
             idx = rs.getInt("idx");
             title = rs.getString("title");
             contents = rs.getString("contents");
@@ -86,11 +171,14 @@
     catch (SQLException e){
         out.println(e.getMessage());
     }
+}
+    catch (SQLException e){
+        out.println(e.getMessage());
+    }
     finally {
 
     }
 %>
-
 <%--    리뷰데이터 가져오기--%>
 <%
     request.setCharacterEncoding("UTF-8");
@@ -127,9 +215,6 @@
         if (pstmt2 != null) {pstmt2.close();}
     }
 %>
-
-
-
 
 <main class="container mt-5">
     <div class="row">
@@ -172,6 +257,7 @@
                     <button type="button" class="btn btn-secondary" id="btn-back">뒤로가기</button>
                 </div>
                 <div class="col-sm d-flex justify-content-end">
+                    <button class="btn btn-danger me-2" type="submit" id="btn-like">좋아요</button>
                     <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2">수정하기</a>
                     <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2">삭제하기</a>
                 </div>

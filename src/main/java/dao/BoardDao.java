@@ -1,50 +1,83 @@
-//package dao;
-//
-//import dto.BoardDto;
-//
-//import javax.naming.Context;
-//import javax.naming.InitialContext;
-//import javax.sql.DataSource;
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.sql.SQLException;
-//
-//public class BoardDao {
-//    private DataSource dataSource;
-////    public BoardDao(){
-////        try{
-////            Context initCtx = new InitialContext();
-////            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-////
-////        }
-////    }
-//
-//    public int boardWrite(BoardDto dto){
-//        Connection conn = null;
-//        PreparedStatement pstmt = null;
-//        int flag = 1;
-//        try {
-//            conn = dataSource.getConnection();
-//
-//            String sql = "INSERT INTO board(boardNum, userId, title, contents, create_dt) VALUES (1,?,?,?,NOW()) ";
-//            pstmt = conn.prepareStatement(sql);
-//            pstmt.setString(1, dto.getId());
-//            pstmt.setString(2, dto.getTitle());
-//            pstmt.setString(3, dto.getContents());
-//            int result = pstmt.executeUpdate();
-//
-//            if(result == 1){
-//                    flag=0;
-//            }
-//        }
-//            catch (Exception e){
-//                System.out.println("SQLException e : " + e.getMessage());
-//            }
-//            finally {
-//            if ( pstmt != null ) try { pstmt.close(); } catch ( SQLException e ) {}
-//            if( conn != null) try {conn.close();} catch (SQLException e ){}
-//            }
-//        return flag;
-//        }
-//    }
-//
+package dao;
+
+import com.mysql.cj.protocol.Resultset;
+import dto.BoardDto;
+import dto.CommentDto;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+
+
+
+public class BoardDao {
+
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+    String url = "jdbc:mysql://localhost:3306/jsp";
+    String user = "root";
+    String passwd = "1234";
+
+
+    public ArrayList<CommentDto> listComment(int boardIdx){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(url,user,passwd);
+
+            String sql = "SELECT idx, userId, boardIdx, commentContents, commentDate, deleted_yn from comment " ;
+                   sql += " where deleted_yn='N' and idx= ? " ;
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            ArrayList<CommentDto> clist = new ArrayList<CommentDto>();
+            while(rs.next()) {
+                CommentDto dto = new CommentDto();
+                dto.setIdx(rs.getInt("idx"));
+                dto.setUserId(rs.getString("userId"));
+                dto.setBoardIdx(rs.getInt("boardId"));
+                dto.setCommentContents(rs.getString("commentContents"));
+                dto.setCommentDate(rs.getString("commentDate"));
+
+                clist.add(dto);
+            }
+            return clist;
+        }
+        catch (Exception e) {
+        }
+        finally {
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return null;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

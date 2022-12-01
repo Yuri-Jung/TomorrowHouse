@@ -14,17 +14,40 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="style.css" rel="stylesheet" type="text/css">
+
+    <script>
+        $(document).ready(function () {
+            $('#btn-save').on('click', function () {
+                const frm = $('#frm');
+                //간단하게 신원확인할 수 있다. 아이디 비밀번호 확인.
+
+                if ($('#id').val() == "") {
+                    alert("아이디를 입력하세요");
+                }
+                else if($('#pw').val() == ""){
+                    alert("비밀번호를 입력하세요");
+                }
+                else {
+                        frm.submit();
+                }
+            });
+            $('#btn-back').on('click', function () {
+                history.back();
+            });
+        });
+
+    </script>
 </head>
 <body>
 <%@include file="header.jsp"%>
-<form action= "login_process.jsp" method="post">
+<form action= "login_process.jsp" method="post" id="frm" name="frm">
 <div class="login-page mt-5 p-5">
     <div class="form mt-5 p-5">
         <p class="fs-3 fw-bolder ">Login</p>
-        <form class="login-form">
+        <form class="login-form" >
             <input type="text" placeholder="id" id="id" name="id" />
             <input type="password" id="pw" name="pw" placeholder="password" />
-            <button type="submit">login</button>
+            <button type="button" id="btn-save" name="btn-save">login</button>
             <p class="message" >Not registered? <a href="join.jsp">Create an account</a></p>
         </form>
     </div>

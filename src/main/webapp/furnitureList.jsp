@@ -82,7 +82,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-end">
-                    <a href="boardWrite.jsp" class="btn btn-primary">글쓰기</a>
+                    <a href="boardWrite2.jsp" class="btn btn-primary">글쓰기</a>
                 </div>
             </div>
         </div>

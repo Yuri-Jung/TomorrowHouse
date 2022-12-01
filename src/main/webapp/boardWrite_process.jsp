@@ -10,6 +10,12 @@
 <%@ include file="dbconn.jsp"%>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.Enumeration" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.util.Enumeration" %>
+<%
+
+%>
+
 
 <%!
   String selected;
@@ -20,7 +26,7 @@
   String userId = request.getParameter("id");
   String title = request.getParameter("title");
   String contents = request.getParameter("contents");
-
+out.print(sel);
   if (sel.equals("리모델링")) {
     selected="1";
   } else if (sel.equals("인테리어")){

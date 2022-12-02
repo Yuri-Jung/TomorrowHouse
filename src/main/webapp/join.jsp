@@ -45,7 +45,14 @@
     </script>
 </head>
 <body>
+<% // 로그인이 되어있지 않은 사람들만 로그인 회원가입 보이게
+    String userId = null;
+    if(session.getAttribute("userId")	!= null){
+        userId = (String)session.getAttribute("userId");%>
+<%@include file="header_login.jsp"%>
+<%}else{%>
 <%@include file="header.jsp"%>
+<% }%>
 <form action= "join_process.jsp" method="post" id="frm">
 <div class="join-page mt-5 p-5">
     <div class="form mt-5 p-5">

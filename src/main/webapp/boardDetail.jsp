@@ -8,64 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="dbconn.jsp"%>
-<script type="text/javascript">
 
-    $(function(){
-
-        var able = $('#userId').val();		//	로그인된 유저의 'id'값
-
-        var id = $('#id').val();			//	게시글의 'id'값
-
-        if(able==id){
-
-            $("#submit").removeAttr("disabled");		//	버튼을 활성화 시킨다.
-
-            $('#delBtn').click(function(){
-
-                var pw = $('#password').val();		//	게시글의 'passwowrd'값
-
-                var idx = $('#idx').val();			//	게시글의 'idx'값
-
-                alert(pw);
-
-                var ck = prompt("본인 비밀번호를 입력해 주세요");		// prompt를 여러번 이용하기 위해 변수에 넣어준다
-
-                if(ck == null){
-
-                    alert('취소되었습니다.');
-
-                }else if(ck == ""){
-
-                    alert('아무것도 입력되지 않았습니다.');
-
-                }else {
-
-                    if(ck == pw){
-
-                        alert("삭제되었습니다.")
-
-                        viewForm.action="delete";		//	조건을 만족하면 폼안의 값들을 컨트롤러의 '/delete'로 넘겨줄 경로
-
-                        viewForm.submit();				//	넘겨주는 명령
-
-                    }else{
-
-                        alert("비밀번호가 틀립니다.")
-
-                    }
-
-                }
-
-            });
-
-        }else{
-
-            $("#delBtn").attr("disabled", "disabled");	//	버튼 비활성화
-
-        }
-
-    });
-</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,6 +23,31 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $('#btn-delete').on('click', function () {
+                if(!userId_check.equals(userId)){
+                    prompt("본인 글만 삭제할 수 있습니다.")
+                    history.back();
+                }
+            });
+        });
+    </script>
+    <script>
+        function btn_click(){
+            alert('로그인을 하셔야 이용하실 수 있습니다');
+            location.href='login.jsp';
+        }
+
+        function btn_like(){
+            alert('로그인을 하셔야 이용하실 수 있습니다');
+            location.href='login.jsp';
+        }
+
+
+
+    </script>
+
 <style>
     #tblAddCommnet, #tblListComment { width: 700px; margin: 15px auto; }
 
@@ -107,22 +75,15 @@
 </style>
 </head>
 <body>
-<c:if test="${sessionScope.loginId == null || sessionScope.loginId eq 'guest'}">
-<%--    <img src="/resources/img/좋아요전.png" id="likeimg" width="60px" height="60px"--%>
-<%--         class="rounded-circle mt-2">--%>
-    ${b.like_count} <br><br>
-    추천 기능은 <a href="/member/login" type="button" id="newLogin"
-              class="btn btn-outline-success">로그인</a> 후 사용 가능합니다.
-</c:if>
-<c:if test="${sessionScope.loginId != null}">
-    <div>
-        <input type="hidden" id="like_check" value="${like.like_check}">
-        <img class="rounded-circle likeimg" id="likeimg" src="/resources/img/좋아요전.png"
-             width="60px" height="60px"> ${b.like_count}
-    </div>
-</c:if>
-</body>
+<%
+    String userId_check = null;
+    if(session.getAttribute("userId")	!= null){
+        userId_check = (String)session.getAttribute("userId");%>
+<%@include file="header_login.jsp"%>
+<%}else{%>
 <%@include file="header.jsp"%>
+<% }%>
+
 <%--    메인 데이터 가져오기--%>
 <%
 
@@ -217,12 +178,14 @@ try {
 %>
 
 <main class="container mt-5">
+    <form action="#" method="post" name="frm2" id="frm2">
     <div class="row">
         <div class="col-sm">
+
             <div class="row my-3">
                 <div class="col-sm">
-                    <label for="title" class="form-label">제목 : </label>
-                    <input type="text" class="form-control" id="title" name="title" value="<%=title%>">
+                    <label for="titleT" class="form-label">제목 : </label>
+                    <input type="text" class="form-control" id="titleT" name="titleT" value="<%=title%>">
                 </div>
             </div>
             <div class="row my-3">
@@ -248,23 +211,47 @@ try {
                 </div>
             </div>
             <div class="col-sm">
-                <label for="contents" class="form-label">내용</label>
-                <input type="text" class="form-control" id="contents" name="contents" value="<%=contents%>"
+                <label for="contents2" class="form-label">내용</label>
+                <input type="text" class="form-control" id="contents2" name="contents2" value="<%=contents%>"
                         style="height: 500px" rows="10" cols="50">
             </div>
+
             <div class="row my-3">
                 <div class="col-sm">
                     <button type="button" class="btn btn-secondary" id="btn-back">뒤로가기</button>
                 </div>
                 <div class="col-sm d-flex justify-content-end">
-                    <button class="btn btn-danger me-2" type="submit" id="btn-like">좋아요</button>
-                    <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2">수정하기</a>
-                    <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2">삭제하기</a>
+
+<%--                    <button class="btn btn-danger me-2" type="submit" id="btn-like">좋아요</button>--%>
+                                    <%--본인 글에만 좋아요, 삭제버튼이 나오게--%>
+                <div class="col-sm">
+                            <%
+
+                                if(session.getAttribute("userId")!=null && session.getAttribute("userId").equals(userId)) {%>
+                                <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-update">수정하기</a>
+                                <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-delete" type="button">삭제하기</a>
                 </div>
-            </div>
+                        <%}else{%>
+<%--    <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-update">로그인하고</a>--%>
+<%--    <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-delete" type="button">로그인하고</a>--%>
+                        <%}%>
+    </form>
+    <%
+        if(session.getAttribute("userId") != null){%>
+    <a href="like.jsp?boardIdx=<%=idx%>" class="btn btn-danger me-2" type="submit" id="btn-like">좋아요</a>
+                </div>
+                <%}else{%>
+                <button class="btn btn-danger me-2" type="submit" id="btn-like" onclick="btn_like()" >좋아요</button>
+                <% }%>
+                </div>
         </div>
+        </div>
+        </div>
+
         <div>
-            <form method="post" enctype="multipart/form-data" action="commentWrite.jsp?boardIdx=<%=idx%>" >
+<%--            enctype="multipart/form-data"--%>
+            <form method="post" action="commentWrite.jsp" id="frm" name="frm">
+<%--                action="commentWrite.jsp?boardIdx=<%=idx%>"--%>
             <table id="commentList" class="table table-bordered">
                 <thead>
                     <tr>
@@ -274,35 +261,66 @@ try {
                         <td>날짜</td>
                     </tr>
                 </thead>
-<%--                <c:if test="${ clist.size() == 0 }">--%>
-<%--                    <tr>--%>
-<%--                        <td colspan="2">댓글이 없습니다.</td>--%>
-<%--                    </tr>--%>
-<%--                </c:if>--%>
-
                 <tbody>
                     <tr>
                         <td width="10%"><%=idx2%></td>
                         <td width="15%"><%=userId2%></td>
                         <td width="60%"> <%=commentContents%></td>
                         <td width="30%"><%=commentDate%></td>
-                        <td width="30%"><a href="commentDelete.jsp?boardIdx=<%=idx2%>" class="btn btn-primary">삭제</a></td>
+
+                        <%
+                            if(session.getAttribute("userId")!=null &&userId_check.equals(userId2)) {%>
+                            <td width="30%"><a href="commentDelete.jsp?boardIdx=<%=idx2%>" class="btn btn-primary">삭제</a></td>
+                        <%}%>
                     </tr>
                 </tbody>
             </table>
-
                 <table id="tblAddComment" class="table table-bordered">
                     <tr>
-                        <td><input type="textarea" name="commentContents" id="commentContents" class="form-control" required placeholder="댓글을 작성하세요. "/></td>
-<%--                        <td ><input type="submit" class="btn btn-primary"> <a href="commentWrite.jsp?boardIdx=<%=idx%>" >등록하기/></a></td>--%>
-                        <td><input type="submit" class="btn-primary pull" value="댓글 작성"></td>
+                <div class="d-flex justify-content-end">
+<%--                    로그인 되어있는 사람만 댓글 작성할 수 있게--%>
+                    <td>
+                        <textarea class="form-control" id="commentContents2" name="commentContents2" placeholder="내용을 입력하세요"></textarea>
+                        <label for="commentContents2" class="form-label">Contents...</label>
+                    </td>
+<%--    required placeholder="댓글을 작성하세요. "--%>
+                    <%
+                    if(userId_check	!= null){%>
+                    <td><input type="button" name="btn-comment" id="btn-comment" class="btn-primary" value="댓글 작성" id="btn-comment" name="btn-comment"></td>
+                </div>
+                <%}else{%>
+<%--                        <td><input type="button" class="btn-primary pull" value="댓글 작성" onclick="btn_click();"></td>--%>
+                <% }%>
                     </tr>
                 </table>
-<%--                <input type="hidden" name="pseq" value="<%=idx2%>"/>--%>
             </form>
         </div>
     </div>
 </main>
 <%@include file="footer.jsp"%>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const frm = document.querySelector('#frm');
+        const frm2 = document.querySelector('#frm2');
+        const btnCommentWrite = document.querySelector('#btn-comment');
+        const btnUpdate = document.querySelector("#btn-update");
+        const btnLike = document.querySelector("#btn-like");
+
+        btnCommentWrite.addEventListener('click', function () {
+            // alert("댓글작성버튼이 클릭되었습니다")
+            <%--frm.action="commentWrite.jsp?boardIdx=<%=idx%>&commentContents2=<%=commentContents2%>";--%>
+            frm.action="commentWrite.jsp?boardIdx=<%=idx%>&commentContents2=" + $("#commentContents2").val();
+            frm.submit();
+        });
+        btnUpdate.addEventListener('click', function () {
+            frm.action="boardUpdate.jsp?boardIdx=<%=idx%>&titleT=" + $("#titleT").val();
+            frm.submit();
+        });
+
+    //     btnLike.addEventListener('click', function () {
+    //
+    //     })
+    });
+</script>
 </body>
 </html>

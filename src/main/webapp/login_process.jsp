@@ -27,11 +27,12 @@
     if (rs.next()) {
       if(pw.equals(rs.getString("userPw"))){
         session.setAttribute("userId", rs.getString("userId"));
-        out.println("<script>alert('환영합니다'); location.href='boardMain.jsp';</script>");
+        out.println("<script>alert('환영합니다'); history.go(-2);</script>");
       }
-    }
+
     else {
       out.println("<script>alert('일치하는 데이터가 없습니다'); location.href='login.jsp';</script>");
+    }
     }
   }
   catch (SQLException e){

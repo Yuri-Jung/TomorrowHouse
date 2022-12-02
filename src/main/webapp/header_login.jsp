@@ -1,4 +1,10 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>--%>
+<%--
+  Created by IntelliJ IDEA.
+  User: admin
+  Date: 2022-12-02
+  Time: 오전 9:25
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -33,18 +39,23 @@
         </li>
       </ul>
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link fw-bolder me-3" href="login.jsp">Login</a>
+
+<%--        <li class="nav-item fw-bolder me-3">--%>
+<%--          <a class="nav-link" href="boardMyPage.jsp">MyPage</a>--%>
+<%--        </li>--%>
+        <li class="nav-item dropdown fw-bolder me-3">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            MyPage
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="boardMyPage.jsp">작성한 글</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="join_update.jsp">회원정보 수정</a></li>
+          </ul>
         </li>
         <li class="nav-item fw-bolder me-3">
-          <a class="nav-link" href="join.jsp">Sign Up</a>
+          <a class="nav-link" href="logout_process.jsp">Logout</a>
         </li>
-<%--        <li class="nav-item fw-bolder me-3">--%>
-<%--          <a class="nav-link" href="#">MyPage</a>--%>
-<%--        </li>--%>
-<%--        <li class="nav-item fw-bolder me-3">--%>
-<%--          <a class="nav-link" href="logout_process.jsp">Logout</a>--%>
-<%--        </li>--%>
       </ul>
     </div>
   </div>

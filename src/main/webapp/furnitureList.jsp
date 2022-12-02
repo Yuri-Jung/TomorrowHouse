@@ -16,9 +16,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function btn_click(){
+            alert('로그인을 하셔야 이용하실 수 있습니다');
+            location.href='login.jsp';
+        }
+    </script>
 </head>
 <body>
-<%@ include file="header.jsp"%>
+<% // 로그인이 되어있지 않은 사람들만 로그인 회원가입 보이게
+    String userId_check = null;
+    if(session.getAttribute("userId")	!= null){
+        userId_check = (String)session.getAttribute("userId");%>
+<%@include file="header_login.jsp"%>
+<%}else{%>
+<%@include file="header.jsp"%>
+<% }%>
 <%@ include file="dbconn.jsp"%>
 <header class="container mt-3">
     <div class="p-5 mb-4 bg-white rounded-3">
@@ -81,9 +94,17 @@
                     %>
                     </tbody>
                 </table>
+                <% // 로그인이 되어있지 않은 사람들만 로그인 회원가입 보이게
+                    userId_check = null;
+                    if(session.getAttribute("userId")	!= null){%>
                 <div class="d-flex justify-content-end">
                     <a href="boardWrite2.jsp" class="btn btn-primary">글쓰기</a>
                 </div>
+                <%}else{%>
+                <div class="d-flex justify-content-end">
+                    <a href="login.jsp" class="btn btn-primary" id="btn-write" onclick="btn_click();">글쓰기</a>
+                </div>
+                <% }%>
             </div>
         </div>
     </main>

@@ -12,18 +12,18 @@
 <%
     request.setCharacterEncoding("utf-8");
     int boardIdx = Integer.parseInt(request.getParameter("boardIdx"));
-    String userId = request.getParameter("userId");
-    String commentContents = request.getParameter("commentContents");
+    String userId = (String)session.getAttribute("userId");
+    String commentContents = request.getParameter("commentContents2");
 
     PreparedStatement pstmt = null;
 
     try{
 
-    String sql = "INSERT INTO comment (boardIdx,userId,commentContents,commentDate) VALUES(?,'haha',?,now()) " ;
+    String sql = "INSERT INTO comment (boardIdx,userId,commentContents,commentDate) VALUES(?,?,?,now()) " ;
     pstmt = conn.prepareStatement(sql);
     pstmt.setInt(1,boardIdx);
-//    pstmt.setString(2,userId);
-    pstmt.setString(2,commentContents);
+    pstmt.setString(2,userId);
+    pstmt.setString(3,commentContents);
     pstmt.executeUpdate();
   }
   catch (SQLException e){

@@ -28,13 +28,22 @@
   String userId = (String)session.getAttribute("userId");
   String title = request.getParameter("title");
   String contents = request.getParameter("contents");
-out.print(sel);
+//out.print(sel);
   if (sel.equals("리모델링")) {
     selected="1";
   } else if (sel.equals("인테리어")){
     selected="2";
   } else
     selected="3";
+//  if (sel.equals("리모델링")) {
+//    selected="1";
+//  } else if (sel.equals("인테리어")){
+//    selected="2";
+//  } else if(sel.equals("소품/가구")){
+//    selected="3";
+//  } else
+//    out.println("<script>alert('카테고리를 다시 선택해주세요');");
+
 
 
   PreparedStatement pstmt = null;

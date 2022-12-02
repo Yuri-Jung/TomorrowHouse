@@ -13,20 +13,20 @@
     request.setCharacterEncoding("utf-8");
 
     int idx = Integer.parseInt(request.getParameter("idx"));
-    String title = request.getParameter("title");
-    String contents = request.getParameter("contents");
+    String title2 = request.getParameter("titleT");
+    String contents2 = request.getParameter("contents2");
 
 
-    PreparedStatement pstmt = null;
 
     String query = "UPDATE board SET title = ?, contents=?,update_dt= NOW() ";
     query += "WHERE idx = ? " ;
+    PreparedStatement pstmt = null;
 
     try {
-        conn = DriverManager.getConnection(url, user, passwd);
+
         pstmt = conn.prepareStatement(query);
-        pstmt.setString(1, title);
-        pstmt.setString(2, contents);
+        pstmt.setString(1, title2);
+        pstmt.setString(2, contents2);
         pstmt.setInt(3, idx);
         pstmt.executeUpdate();
     }
@@ -37,5 +37,5 @@
         if(pstmt != null) {pstmt.close();}
         if(conn != null) {conn.close();}
     }
-    response.sendRedirect("boardMain.jsp");
+    out.println("<script>alert('글이 수정되었습니다'); history.go(-2);</script>");
 %>

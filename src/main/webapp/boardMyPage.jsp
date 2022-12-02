@@ -1,51 +1,33 @@
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="javax.swing.plaf.nimbus.State" %><%--
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.sql.PreparedStatement" %><%--
   Created by IntelliJ IDEA.
-  User: 정유리
-  Date: 2022-11-27
-  Time: 오후 4:38
+  User: admin
+  Date: 2022-12-02
+  Time: 오전 10:18
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>인테리어</title>
+    <title>MyPage</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function btn_click(){
-            alert('로그인을 하셔야 이용하실 수 있습니다');
-            location.href='login.jsp';
-        }
-    </script>
+
 </head>
 <body>
-<% // 로그인이 되어있지 않은 사람들만 로그인 회원가입 보이게
-    String userId_check = null;
-    if(session.getAttribute("userId")	!= null){
-        userId_check = (String)session.getAttribute("userId");%>
-<%@include file="header_login.jsp"%>
-<%}else{%>
-<%@include file="header.jsp"%>
-<% }%>
+<%@ include file="header_login.jsp"%>
 <%@ include file="dbconn.jsp"%>
 <header class="container mt-3">
     <div class="p-5 mb-4 bg-white rounded-3">
         <div class="container-fluid py-4">
-            <h1 class="text-start fst-italic">인테리어 페이지</h1>
+            <h1 class="text-start fst-italic">MyPage</h1>
         </div>
     </div>
-    <%
 
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        String sql = "SELECT idx, title, userId, create_dt, hit_cnt, boardNum from board where deleted_yn= 'N' AND boardNum='2' ORDER BY update_dt desc" ;
-    %>
     <main class="container mt-5">
         <div class="row">
             <div class="col-sm">
@@ -61,10 +43,17 @@
                     </thead>
                     <tbody>
                     <%
+                        PreparedStatement pstmt = null;
+                        ResultSet rs = null;
+                        String userIdCheck = (String)session.getAttribute("userId");
+                    %>
+                    <%
                         try{
                             conn = DriverManager.getConnection(url,user,passwd);
-                            stmt = conn.createStatement();
-                            rs = stmt.executeQuery(sql);
+                            String sql = "SELECT idx, title, userId, create_dt, hit_cnt, boardNum from board where deleted_yn= 'N' AND userId=? ORDER BY create_dt desc" ;
+                            pstmt = conn.prepareStatement(sql);
+                            pstmt.setString(1, userIdCheck);
+                            rs = pstmt.executeQuery();
 
                             while(rs.next()){
                                 int idx = rs.getInt("idx");
@@ -89,22 +78,11 @@
                         finally {
                             if (rs != null) {rs.close();}
                             if (conn != null) {conn.close();}
-                            if (stmt != null) {stmt.close();}
+                            if (pstmt != null) {pstmt.close();}
                         }
                     %>
                     </tbody>
                 </table>
-                <% // 로그인이 되어있지 않은 사람들만 로그인 회원가입 보이게
-                    userId_check = null;
-                    if(session.getAttribute("userId")	!= null){%>
-                <div class="d-flex justify-content-end">
-                    <a href="boardWrite2.jsp" class="btn btn-primary">글쓰기</a>
-                </div>
-                <%}else{%>
-                <div class="d-flex justify-content-end">
-                    <a href="login.jsp" class="btn btn-primary" id="btn-write" onclick="btn_click();">글쓰기</a>
-                </div>
-                <% }%>
             </div>
         </div>
     </main>

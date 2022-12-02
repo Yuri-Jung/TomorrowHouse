@@ -15,8 +15,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
+<% // 로그인이 되어있지 않은 사람들만 로그인 회원가입 보이게
+    String userId = null;
+    if(session.getAttribute("userId")	!= null){
+        userId = (String)session.getAttribute("userId");%>
+<%@include file="header_login.jsp"%>
+    <%}else{%>
 <%@include file="header.jsp"%>
-<h2>메인페이지</h2>
+       <% }%>
+
+
+
 </body>
 
 </html>

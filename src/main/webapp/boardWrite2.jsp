@@ -118,7 +118,7 @@
 </head>
 
 <body>
-<%@include file="header.jsp"%>
+<%@include file="header_login.jsp"%>
 
 
 <header class="container mt-3">
@@ -147,8 +147,8 @@
                 <div class="input-group"id="sel2" name="sel">
                     <select class="form-control" id="sel" name="sel">
                         <option value="" selected >선택하세요 &#9660;</option>
-                        <option value="인테리어">인테리어</option>
                         <option value="리모델링">리모델링</option>
+                        <option value="인테리어">인테리어</option>
                         <option value="소품/가구">소품/가구</option>
                     </select>
                 </div>

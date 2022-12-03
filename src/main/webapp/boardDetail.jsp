@@ -178,7 +178,7 @@ try {
 %>
 
 <main class="container mt-5">
-    <form action="#" method="post" name="frm2" id="frm2">
+    <form action="#" method="post" id="frm2">
     <div class="row">
         <div class="col-sm">
 
@@ -228,7 +228,9 @@ try {
                             <%
 
                                 if(session.getAttribute("userId")!=null && session.getAttribute("userId").equals(userId)) {%>
-                                <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-update">수정하기</a>
+                    <input type="hidden" name="idx" value="<%=idx%>">
+                    <button type="button" class="btn btn-warning me-2" id="btn-update">수정하기</button>
+<%--                    <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-update">수정하기</a>--%>
                                 <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-delete" type="button">삭제하기</a>
                 </div>
                         <%}else{%>
@@ -236,14 +238,17 @@ try {
 <%--    <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-delete" type="button">로그인하고</a>--%>
                         <%}%>
     </form>
+<%--    좋아요기능--%>
+    <form method="post" action="#" name="frm3" id="frm3">
     <%
         if(session.getAttribute("userId") != null){%>
-    <a href="like.jsp?boardIdx=<%=idx%>" class="btn btn-danger me-2" type="submit" id="btn-like">좋아요</a>
+    <a href="#" class="btn btn-danger me-2" type="button" id="btn-like" name="btn-like">좋아요</a>
                 </div>
                 <%}else{%>
-                <button class="btn btn-danger me-2" type="submit" id="btn-like" onclick="btn_like()" >좋아요</button>
+                <button class="btn btn-danger me-2" type="submit"  onclick="btn_like()" >좋아요</button>
                 <% }%>
                 </div>
+    </form>
         </div>
         </div>
         </div>
@@ -283,7 +288,7 @@ try {
                         <textarea class="form-control" id="commentContents2" name="commentContents2" placeholder="내용을 입력하세요"></textarea>
                         <label for="commentContents2" class="form-label">Contents...</label>
                     </td>
-<%--    required placeholder="댓글을 작성하세요. "--%>
+
                     <%
                     if(userId_check	!= null){%>
                     <td><input type="button" name="btn-comment" id="btn-comment" class="btn-primary" value="댓글 작성" id="btn-comment" name="btn-comment"></td>
@@ -302,6 +307,7 @@ try {
     window.addEventListener('DOMContentLoaded', function () {
         const frm = document.querySelector('#frm');
         const frm2 = document.querySelector('#frm2');
+        // const frm3 = document.querySelector('#frm3');
         const btnCommentWrite = document.querySelector('#btn-comment');
         const btnUpdate = document.querySelector("#btn-update");
         const btnLike = document.querySelector("#btn-like");
@@ -313,13 +319,19 @@ try {
             frm.submit();
         });
         btnUpdate.addEventListener('click', function () {
-            frm.action="boardUpdate.jsp?boardIdx=<%=idx%>&titleT=" + $("#titleT").val();
-            frm.submit();
+            // const frm2 = document.querySelector('#frm2');
+            <%--frm2.action="boardUpdate.jsp?boardIdx=<%=idx%>&titleT=" + $("#titleT").val();--%>
+            frm2.action="boardUpdate.jsp";
+            frm2.submit();
         });
 
-    //     btnLike.addEventListener('click', function () {
-    //
-    //     })
+        btnLike.addEventListener('click', function () {
+            alert("좋아요 버튼이 클릭되었습니다")
+            frm3.action = "like.jsp?boardIdx=<%=idx%>" ;
+            frm3.submit();
+        });
+
+
     });
 </script>
 </body>

@@ -1,7 +1,10 @@
 package dto;
 
 public class BoardDto {
+    private int idx;
     private int boardNum;
+
+    private String userId;
     private String id;
 
     private String title;
@@ -100,5 +103,21 @@ public class BoardDto {
 
     public void setLikeCnt(int likeCnt) {
         this.likeCnt = likeCnt;
+    }
+
+    public int getIdx() {
+        return idx;
+    }
+
+    public void setIdx(int idx) {
+        this.idx = idx;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

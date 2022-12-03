@@ -27,5 +27,6 @@
         if(conn !=null){conn.close();}
         if(pstmt !=null){pstmt.close();}
     }
+    out.println("<script>alert('좋아요 눌렀습니다'); location.href='login.jsp';</script>");
 
 %>

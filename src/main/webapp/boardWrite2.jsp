@@ -68,17 +68,16 @@
     </script>
     <script>
 
-        // Replace the <textarea id="editor1"> with a CKEditor
 
-        // instance, using default configuration.
 
         CKEDITOR.replace( 'contents', {
 
             filebrowserUploadUrl: '${pageContext.request.contextPath}/file/ckeditorImageUpload.do'
 
         });
-
     </script>
+
+
     <script>
         var ckeditor_config = {
             resize_enabled: false, // 에디터 리사이즈 여부
@@ -100,19 +99,26 @@
           this.updateElement();
         });
 
-
-        // [2013.06.20] 위방법은 문제가 있는 듯 하여~ 아래와 같이 한다.
         editor[1] = CKEDITOR.replace( "content" , ckeditor_config );
 
         // submit 이나 ajax 전송할때 같이 입력해준다.
         editor[1].updateElement();
 
     </script>
-    <script type="text/javascript">
-        CKEDITOR.replace('t_content'
-            , {filebrowserUploadUrl:'imageUpload.do'
-                , height: 800, width: 1000
-            });
+<%--    <script type="text/javascript">--%>
+<%--        CKEDITOR.replace('t_content'--%>
+<%--            , {filebrowserUploadUrl:'imageUpload.do'--%>
+<%--                , height: 800, width: 1000--%>
+<%--            });--%>
+<%--    </script>--%>
+    <script>
+
+        CKEDITOR.replace( 'content', {
+
+            filebrowserImageUploadUrl: '../uploadIMG.jsp'
+
+        });
+
     </script>
 
 </head>
@@ -160,19 +166,13 @@
             <div class="col_c" style="margin-bottom: 30px">
                 <div class="input-group">
                     <textarea class="form-control" id="p_content" name="contents"></textarea>
-<%--                    <script type="text/javascript">--%>
-<%--                        CKEDITOR.replace('p_content'--%>
-<%--                            , {height: 500,--%>
-<%--                                width: 3000--%>
-<%--                            });--%>
-<%--                    </script>--%>
+
                     <script type="text/javascript">
                         CKEDITOR.replace('p_content'
                             , {filebrowserUploadUrl:'imageUpload.do'
                                 , height: 500, width: 3000
                             });
                     </script>
-
                 </div>
             </div>
         </div>

@@ -42,6 +42,16 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation 'commons-io:commons-io:2.11.0'
 
+
+//    cos 테스트
+
+        //implementation files('libs/client-combined-3.141.59.jar')
+//        compile files('libs/client-combined-3.141.59')
+
+// https://mvnrepository.com/artifact/com.ckfinder/CKFinderPlugin-ImageResize
+//    implementation 'com.ckfinder:CKFinderPlugin-ImageResize:2.4'
+
+
 }
 
 test {

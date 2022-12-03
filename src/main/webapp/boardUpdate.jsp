@@ -17,7 +17,6 @@
     String contents2 = request.getParameter("contents2");
 
 
-
     String query = "UPDATE board SET title = ?, contents=?,update_dt= NOW() ";
     query += "WHERE idx = ? " ;
     PreparedStatement pstmt = null;

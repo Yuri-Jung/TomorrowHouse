@@ -4,6 +4,10 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	
+		//아래 한 줄이 바로 추가한 부분
+		config.enterMode = CKEDITOR.ENTER_BR;
+
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html

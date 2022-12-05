@@ -41,6 +41,8 @@
             });
         });
     </script>
+    <script src="/ckeditor/ckeditor.js"></script>
+<%--    <script src = "${path}/ckeditor/ckeditor.js"></script>--%>
     <script>
         $(document).ready(function () {
             $('#btn-delete').on('click', function () {
@@ -196,9 +198,11 @@ try {
                 </div>
             </div>
             <div class="col-sm">
-                <label for="contents2" class="form-label">내용</label>
-                <input type="text" class="form-control" id="contents2" name="contents2" value="<%=contents%>"
-                        style="height: 500px" rows="10" cols="50">
+                <label  class="form-label">내용</label>
+<%--                <input type="text" class="form-control" id="contents2" name="contents2" value="<%=contents%>"--%>
+<%--                        style="height: 500px" rows="10" cols="50">--%>
+                <input type="textarea"  class="form-control" id="p_content" name="contents2" value="<%=contents%>">
+
             </div>
             <div class="row my-3">
                 <div class="col-sm">

@@ -66,16 +66,16 @@
             });
         });
     </script>
-    <script>
+<%--    <script>--%>
 
 
 
-        CKEDITOR.replace( 'contents', {
+<%--        CKEDITOR.replace( 'contents', {--%>
 
-            filebrowserUploadUrl: '${pageContext.request.contextPath}/file/ckeditorImageUpload.do'
+<%--            filebrowserUploadUrl: '${pageContext.request.contextPath}/file/ckeditorImageUpload.do'--%>
 
-        });
-    </script>
+<%--        });--%>
+<%--    </script>--%>
 
 
     <script>
@@ -111,15 +111,14 @@
 <%--                , height: 800, width: 1000--%>
 <%--            });--%>
 <%--    </script>--%>
-    <script>
+<%--    <script>--%>
 
-        CKEDITOR.replace( 'content', {
+<%--        CKEDITOR.replace( 'content', {--%>
 
-            filebrowserImageUploadUrl: '../uploadIMG.jsp'
+<%--            filebrowserUploadUrl:'/imageUpload.do'--%>
+<%--        });--%>
 
-        });
-
-    </script>
+<%--    </script>--%>
 
 </head>
 
@@ -169,7 +168,7 @@
 
                     <script type="text/javascript">
                         CKEDITOR.replace('p_content'
-                            , {filebrowserUploadUrl:'imageUpload.do'
+                            , {filebrowserUploadUrl:'/imageUpload.js'
                                 , height: 500, width: 3000
                             });
                     </script>

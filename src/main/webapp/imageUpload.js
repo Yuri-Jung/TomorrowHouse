@@ -1,10 +1,10 @@
-/**
- * @param multiFile
- * @param request
- * @return
- * @throws Exception
- */
-@RequestMapping(value="/mine/imageUpload.do", method = RequestMethod.POST)
+
+ // * @param multiFile
+ // * @param request
+ // * @return
+ // * @throws Exception
+ //
+@RequestMapping(value="./imageUpload.do", method = RequestMethod.POST)
 public void imageUpload(HttpServletRequest request,
     HttpServletResponse response, MultipartHttpServletRequest multiFile
     , @RequestParam MultipartFile upload) throws Exception{
@@ -52,12 +52,12 @@ public void imageUpload(HttpServletRequest request,
 
     }catch(IOException e){
         e.printStackTrace();
-    } finally {
+    }finally {
         try {
             if(out != null) { out.close(); }
             if(printWriter != null) { printWriter.close(); }
-        } catch(IOException e) { e.printStackTrace(); }
+        }
+        catch(Exception e)
+        { e.printStackTrace(); }
     }
-
-    return;
 }

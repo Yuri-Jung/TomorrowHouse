@@ -7,6 +7,7 @@ CKEDITOR.editorConfig = function( config ) {
 	
 		//아래 한 줄이 바로 추가한 부분
 		config.enterMode = CKEDITOR.ENTER_BR;
+	config.filebrowserUploadMethod = 'form';
 
 	// Define changes to default configuration here.
 	// For complete reference see:

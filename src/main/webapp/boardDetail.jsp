@@ -16,6 +16,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        #commentList{
+            border-top:1px solid #FFFFFF;
+            border-bottom:1px solid #00ffff;
+
+            border-right:1px solid #FFFFFF;
+            border-left: 1px solid #FFFFFF;
+
+            text-align: center;
+            vertical-align : middle;
+        }
+        #tblAddComment{
+            border-top:1px solid #FFFFFF;
+            border-bottom:1px solid #FFFFFF;
+            border-right:1px solid #FFFFFF;
+            border-left: 1px solid #FFFFFF;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $('#btn-back').on('click', function () {
@@ -141,41 +159,7 @@ try {
     }
 %>
 <%--    리뷰데이터 가져오기--%>
-<%
-    request.setCharacterEncoding("UTF-8");
-    int boardIdx = Integer.parseInt(request.getParameter("idx"));
-    PreparedStatement pstmt2 = null;
-    int idx2 = 0;
-    ResultSet rs2 = null;
-    String commentDate = "";
-    String commentContents = "";
-    String userId2 = "";
 
-    try {
-        String sql2 = "SELECT idx, userId, boardIdx, commentContents, commentDate, deleted_yn from comment ";
-        sql2 += " where deleted_yn='N' and boardIdx= ? ";
-        pstmt2 = conn.prepareStatement(sql2);
-        pstmt2.setInt(1, boardIdx);
-        rs2 = pstmt2.executeQuery();
-        if(rs2.next()) {
-            idx2=(rs2.getInt("idx"));
-            userId2=(rs2.getString("userId"));
-            commentContents=(rs2.getString("commentContents"));
-            commentDate=(rs2.getString("commentDate"));
-        }
-    }
-    catch (SQLException e){
-        out.println(e.getMessage());
-    }
-    finally {
-        if (rs != null) {rs.close();}
-        if (conn != null) {conn.close();}
-        if (pstmt != null) {pstmt.close();}
-        if (rs2 != null) {rs2.close();}
-        if (conn != null) {conn.close();}
-        if (pstmt2 != null) {pstmt2.close();}
-    }
-%>
 
 <main class="container mt-5">
     <form action="#" method="post" id="frm2">
@@ -197,10 +181,11 @@ try {
                     <label for="hit-cnt" class="form-label">조회수:</label>
                     <input type="text" class="form-control" id="hit-cnt" name="hitCtn" value="<%=hitCnt%>" readonly>
                 </div>
-                <div class="col-sm">
-                    <label for="like-cnt" class="form-label">좋아요 수:</label>
-                    <input type="text" class="form-control" id="like-cnt" name="likeCnt" value="<%=likeCnt%>" readonly>
-                </div>
+<%--                <div class="col-sm">--%>
+<%--                    <label for="like-cnt" class="form-label">
+ 수:</label>--%>
+<%--                    <input type="text" class="form-control" id="like-cnt" name="likeCnt" value="<%=likeCnt%>" readonly>--%>
+<%--                </div>--%>
                 <div class="col-sm">
                     <label for="create-dt" class="form-label">등록일</label>
                     <input type="text" class="form-control text-end" id="create-dt" name="createDt" value="<%=createDt%>" readonly>
@@ -215,7 +200,6 @@ try {
                 <input type="text" class="form-control" id="contents2" name="contents2" value="<%=contents%>"
                         style="height: 500px" rows="10" cols="50">
             </div>
-
             <div class="row my-3">
                 <div class="col-sm">
                     <button type="button" class="btn btn-secondary" id="btn-back">뒤로가기</button>
@@ -224,14 +208,15 @@ try {
 
 <%--                    <button class="btn btn-danger me-2" type="submit" id="btn-like">좋아요</button>--%>
                                     <%--본인 글에만 좋아요, 삭제버튼이 나오게--%>
-                <div class="col-sm">
+
                             <%
 
                                 if(session.getAttribute("userId")!=null && session.getAttribute("userId").equals(userId)) {%>
                     <input type="hidden" name="idx" value="<%=idx%>">
-                    <button type="button" class="btn btn-warning me-2" id="btn-update">수정하기</button>
+                    <button type="button" class="btn btn-outline-primary me-2" id="btn-update">수정하기</button>
 <%--                    <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-update">수정하기</a>--%>
-                                <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-delete" type="button">삭제하기</a>
+                                <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-outline-success me-2" id="btn-delete" type="button">삭제하기</a>
+
                 </div>
                         <%}else{%>
 <%--    <a href="boardUpdate.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-update">로그인하고</a>--%>
@@ -239,59 +224,98 @@ try {
                         <%}%>
     </form>
 <%--    좋아요기능--%>
-    <form method="post" action="#" name="frm3" id="frm3">
-    <%
-        if(session.getAttribute("userId") != null){%>
-    <a href="#" class="btn btn-danger me-2" type="button" id="btn-like" name="btn-like">좋아요</a>
-                </div>
-                <%}else{%>
-                <button class="btn btn-danger me-2" type="submit"  onclick="btn_like()" >좋아요</button>
-                <% }%>
-                </div>
-    </form>
+<%--    <form method="post" action="#" name="frm3" id="frm3">--%>
+<%--    <%--%>
+<%--        if(session.getAttribute("userId") != null){%>--%>
+<%--    <a href="#" class="btn btn-danger me-2" type="button" id="btn-like" name="btn-like">좋아요</a>--%>
+<%--                </div>--%>
+<%--                <%}else{%>--%>
+<%--                <button class="btn btn-danger me-2" type="submit"  onclick="btn_like()" >좋아요</button>--%>
+<%--                <% }%>--%>
+<%--                </div>--%>
+<%--    </form>--%>
         </div>
         </div>
         </div>
 
         <div>
+            <hr>
 <%--            enctype="multipart/form-data"--%>
             <form method="post" action="commentWrite.jsp" id="frm" name="frm">
 <%--                action="commentWrite.jsp?boardIdx=<%=idx%>"--%>
-            <table id="commentList" class="table table-bordered">
+            <table id="commentList" class="table table-bordered mt-5">
                 <thead>
-                    <tr>
-                        <td>글번호</td>
-                        <td>작성자</td>
-                        <td>내용</td>
-                        <td>날짜</td>
-                    </tr>
+<%--                    <tr>--%>
+<%--                        이걸 주석처리하니까 반복되어서 나온다--%>
+<%--                        <td>글번호</td>--%>
+<%--                        <td>작성자</td>--%>
+<%--                        <td>내용</td>--%>
+<%--                        <td>날짜</td>--%>
+<%--                    </tr>--%>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td width="10%"><%=idx2%></td>
-                        <td width="15%"><%=userId2%></td>
-                        <td width="60%"> <%=commentContents%></td>
-                        <td width="30%"><%=commentDate%></td>
+                <%
+                    request.setCharacterEncoding("UTF-8");
+                    int boardIdx = Integer.parseInt(request.getParameter("idx"));
+                    PreparedStatement pstmt2 = null;
+                    int idx2 = 0;
+                    ResultSet rs2 = null;
+                    String commentDate = "";
+                    String commentContents = "";
+                    String userId2 = "";
 
-                        <%
-                            if(session.getAttribute("userId")!=null &&userId_check.equals(userId2)) {%>
-                            <td width="30%"><a href="commentDelete.jsp?boardIdx=<%=idx2%>" class="btn btn-primary">삭제</a></td>
-                        <%}%>
-                    </tr>
+                    try {
+                        String sql2 = "SELECT idx, userId, boardIdx, commentContents, commentDate, deleted_yn from comment ";
+                        sql2 += " where deleted_yn='N' and boardIdx= ? ";
+                        pstmt2 = conn.prepareStatement(sql2);
+                        pstmt2.setInt(1, boardIdx);
+                        rs2 = pstmt2.executeQuery();
+                        while (rs2.next()) {
+                            idx2=(rs2.getInt("idx"));
+                            userId2=(rs2.getString("userId"));
+                            commentContents=(rs2.getString("commentContents"));
+                            commentDate=(rs2.getString("commentDate"));
+                            %>
+                <tr>
+                    <td width="10%" height="60"><%=idx2%></td>
+                    <td width="15%" height="60"><%=userId2%></td>
+                    <td width="45%" height="60"> <%=commentContents%></td>
+                    <td width="20%" height="60"><%=commentDate%></td>
+
+                    <%
+                        if(session.getAttribute("userId")!=null &&userId_check.equals(userId2)) {%>
+                    <td width="10%"><a href="commentDelete.jsp?boardIdx=<%=idx2%>" class="btn btn-primary">삭제</a></td>
+                    <%}%>
+                </tr>
+                <%
+                        }
+                    }
+                    catch (SQLException e){
+                        out.println(e.getMessage());
+                    }
+                    finally {
+                        if (rs != null) {rs.close();}
+                        if (conn != null) {conn.close();}
+                        if (pstmt != null) {pstmt.close();}
+                        if (rs2 != null) {rs2.close();}
+                        if (conn != null) {conn.close();}
+                        if (pstmt2 != null) {pstmt2.close();}
+                    }
+                %>
+
                 </tbody>
             </table>
-                <table id="tblAddComment" class="table table-bordered">
+                <table id="tblAddComment" class="table table-bordered mt-5 p-5">
                     <tr>
                 <div class="d-flex justify-content-end">
 <%--                    로그인 되어있는 사람만 댓글 작성할 수 있게--%>
                     <td>
                         <textarea class="form-control" id="commentContents2" name="commentContents2" placeholder="내용을 입력하세요"></textarea>
-                        <label for="commentContents2" class="form-label">Contents...</label>
                     </td>
 
                     <%
                     if(userId_check	!= null){%>
-                    <td><input type="button" name="btn-comment" id="btn-comment" class="btn-primary" value="댓글 작성" id="btn-comment" name="btn-comment"></td>
+                    <td><input type="button" class="btn btn-outline-info" name="btn-comment" id="btn-comment" value="댓글 작성"></td>
                 </div>
                 <%}else{%>
 <%--                        <td><input type="button" class="btn-primary pull" value="댓글 작성" onclick="btn_click();"></td>--%>
@@ -330,8 +354,6 @@ try {
             frm3.action = "like.jsp?boardIdx=<%=idx%>" ;
             frm3.submit();
         });
-
-
     });
 </script>
 </body>

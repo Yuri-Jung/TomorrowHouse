@@ -33,7 +33,7 @@
     if(pstmt != null){pstmt.close();}
     if(conn != null){conn.close();}
   }
-  out.println("<script>alert('댓글이 등록되었습니다');history.go(-2)</script>");
+  out.println("<script>alert('댓글이 등록되었습니다');history.go(-1)</script>");
 
 %>
 

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/ckeditor/ckeditor.js"></script>
     <style>
         #commentList{
             border-top:1px solid #FFFFFF;
@@ -34,6 +35,8 @@
             border-left: 1px solid #FFFFFF;
         }
     </style>
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#btn-back').on('click', function () {
@@ -41,7 +44,7 @@
             });
         });
     </script>
-    <script src="/ckeditor/ckeditor.js"></script>
+<%--    <script src="/ckeditor/ckeditor.js"></script>--%>
 <%--    <script src = "${path}/ckeditor/ckeditor.js"></script>--%>
     <script>
         $(document).ready(function () {
@@ -183,11 +186,6 @@ try {
                     <label for="hit-cnt" class="form-label">조회수:</label>
                     <input type="text" class="form-control" id="hit-cnt" name="hitCtn" value="<%=hitCnt%>" readonly>
                 </div>
-<%--                <div class="col-sm">--%>
-<%--                    <label for="like-cnt" class="form-label">
- 수:</label>--%>
-<%--                    <input type="text" class="form-control" id="like-cnt" name="likeCnt" value="<%=likeCnt%>" readonly>--%>
-<%--                </div>--%>
                 <div class="col-sm">
                     <label for="create-dt" class="form-label">등록일</label>
                     <input type="text" class="form-control text-end" id="create-dt" name="createDt" value="<%=createDt%>" readonly>
@@ -201,7 +199,28 @@ try {
                 <label  class="form-label">내용</label>
 <%--                <input type="text" class="form-control" id="contents2" name="contents2" value="<%=contents%>"--%>
 <%--                        style="height: 500px" rows="10" cols="50">--%>
-                <input type="textarea"  class="form-control" id="p_content" name="contents2" value="<%=contents%>">
+<%--                <input type="textarea"  class="form-control" id="p_content" name="contents2" value="<%=contents%>">--%>
+<%--                <textarea class="form-control" id="p_content" name="contents2" value="<%=contents%>"></textarea>--%>
+<%--                <script type="text/javascript">--%>
+<%--                    CKEDITOR.replace('p_content'--%>
+<%--                        , {height: 500--%>
+<%--                        });--%>
+<%--                </script>--%>
+<%--                <textarea class="form-control" id="p_content" name="contents"></textarea>--%>
+                <div class="row justify-content-md-center">
+                    <div class="col_c" style="margin-bottom: 30px">
+                        <div class="input-group">
+                            <textarea class="form-control" id="p_content" name="contents2"><%=contents%></textarea>
+                            <script type="text/javascript">
+                                CKEDITOR.replace('p_content'
+                                    , {filebrowserUploadUrl:'/imageUpload.js'
+                                        , height: 500, width: 3000
+                                    });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
             <div class="row my-3">
@@ -227,17 +246,7 @@ try {
 <%--    <a href="boardDelete.jsp?idx=<%=idx%>" class="btn btn-warning me-2" id="btn-delete" type="button">로그인하고</a>--%>
                         <%}%>
     </form>
-<%--    좋아요기능--%>
-<%--    <form method="post" action="#" name="frm3" id="frm3">--%>
-<%--    <%--%>
-<%--        if(session.getAttribute("userId") != null){%>--%>
-<%--    <a href="#" class="btn btn-danger me-2" type="button" id="btn-like" name="btn-like">좋아요</a>--%>
-<%--                </div>--%>
-<%--                <%}else{%>--%>
-<%--                <button class="btn btn-danger me-2" type="submit"  onclick="btn_like()" >좋아요</button>--%>
-<%--                <% }%>--%>
-<%--                </div>--%>
-<%--    </form>--%>
+
         </div>
         </div>
         </div>
@@ -313,15 +322,19 @@ try {
                     <tr>
                 <div class="d-flex justify-content-end">
 <%--                    로그인 되어있는 사람만 댓글 작성할 수 있게--%>
-                    <td>
-                        <textarea class="form-control" id="commentContents2" name="commentContents2" placeholder="내용을 입력하세요"></textarea>
-                    </td>
+
 
                     <%
                     if(userId_check	!= null){%>
+    <td>
+        <textarea rows="2" cols="50" class="form-control" id="commentContents2" name="commentContents2" placeholder="내용을 입력하세요"></textarea>
+    </td>
                     <td><input type="button" class="btn btn-outline-info" name="btn-comment" id="btn-comment" value="댓글 작성"></td>
                 </div>
                 <%}else{%>
+                        <td>
+                            <textarea class="form-control" id="commentContents3" name="commentContents2" placeholder="로그인하셔야 댓글 작성을 할 수 있습니다" readonly></textarea>
+                        </td>
 <%--                        <td><input type="button" class="btn-primary pull" value="댓글 작성" onclick="btn_click();"></td>--%>
                 <% }%>
                     </tr>

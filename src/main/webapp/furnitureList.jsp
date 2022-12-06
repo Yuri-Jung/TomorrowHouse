@@ -12,7 +12,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>소품/가구</title>
+    <title>내일의집</title>
+    <link rel="shortcut icon" href="fabicon/home.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -44,7 +45,7 @@
         Statement stmt = null;
         ResultSet rs = null;
 
-        String sql = "SELECT idx, title, userId, create_dt, hit_cnt, boardNum from board where deleted_yn= 'N' AND boardNum='3' ORDER BY update_dt desc" ;
+        String sql = "SELECT idx, title, userId, create_dt, hit_cnt, boardNum from board where deleted_yn= 'N' AND boardNum='3' order by idx desc " ;
     %>
     <main class="container mt-5">
         <div class="row">

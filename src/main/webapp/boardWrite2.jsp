@@ -11,9 +11,11 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.io.*"%>
 <%@ page import="java.net.*"%>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./UploadAdapter.js" type="module"></script>
 <%
     //파일 기본경로
     String defaultPath = request.getSession().getServletContext().getRealPath("/");
@@ -28,7 +30,8 @@
 
 <html>
 <head>
-    <title>test</title>
+    <title>내일의집</title>
+    <link rel="shortcut icon" href="fabicon/home.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/ckeditor/ckeditor.js"></script>
     <script>
@@ -66,6 +69,15 @@
             });
         });
     </script>
+    <script type="module">
+        import editor from './UploadAdapter.js'
+        $(document).ready(function () {
+            editor("#input-content").then(editor => {
+                // some code..
+                // then 이후에 받은 editor를 다른 변수로 받아주시는 편이 좋습니다!
+            })
+        })
+    </script>
 <%--    <script>--%>
 
 
@@ -96,7 +108,7 @@
 
         CKEDITOR.replace( "content" , ckeditor_config ).on('key', function () {
           // 에디터에 값이 입력될때마다 textarea 에 업데이트한다. 하지 않을 경우 textarea 의 value 값을 알 수 없다.
-          this.updateElement();
+            this.updateElement();
         });
 
         editor[1] = CKEDITOR.replace( "content" , ckeditor_config );
@@ -164,14 +176,28 @@
         <div class="row justify-content-md-center">
             <div class="col_c" style="margin-bottom: 30px">
                 <div class="input-group">
-                    <textarea class="form-control" id="p_content" name="contents"></textarea>
+<%--                    <textarea class="form-control" id="p_content" name="contents"></textarea>--%>
+                    <div class="row justify-content-md-center">
+                        <div class="col_c" style="margin-bottom: 30px">
+                            <div class="input-group">
+                                <textarea class="form-control" id="p_content" name="contents"></textarea>
+                                <script type="text/javascript">
+                                    CKEDITOR.replace('p_content'
+                                        , {filebrowserUploadUrl:'/imageUpload.js'
+                                            , height: 500, width: 1300
+                                        });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
 
-                    <script type="text/javascript">
-                        CKEDITOR.replace('p_content'
-                            , {filebrowserUploadUrl:'/imageUpload.js'
-                                , height: 500, width: 3000
-                            });
-                    </script>
+<%--                    <script type="text/javascript">--%>
+<%--                        CKEDITOR.replace('p_content'--%>
+<%--                            , {--%>
+<%--                         :'/imageUpload.js'--%>
+<%--                                , height: 500, width: 3000--%>
+<%--                            });--%>
+<%--                    </script>--%>
                 </div>
             </div>
         </div>

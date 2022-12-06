@@ -1,7 +1,9 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="javax.swing.plaf.nimbus.State" %><%--
+<%@ page import="javax.swing.plaf.nimbus.State" %>
+
+<%--
   Created by IntelliJ IDEA.
   User: 정유리
   Date: 2022-11-27
@@ -11,11 +13,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>인테리어</title>
+    <title>내일의집</title>
+    <link rel="shortcut icon" href="fabicon/home.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         function btn_click(){
             alert('로그인을 하셔야 이용하실 수 있습니다');
@@ -44,7 +49,7 @@
         Statement stmt = null;
         ResultSet rs = null;
 
-        String sql = "SELECT idx, title, userId, create_dt, hit_cnt, boardNum from board where deleted_yn= 'N' AND boardNum='2' ORDER BY update_dt desc" ;
+        String sql = "SELECT idx, title, userId, create_dt, hit_cnt, boardNum from board where deleted_yn= 'N' AND boardNum='2' ORDER BY create_dt desc" ;
     %>
     <main class="container mt-5">
         <div class="row">
